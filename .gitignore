@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Packaging / build
+.Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Test / cache
+.coverage
+.coverage.*
+.cache/
+.pytest_cache/
+.mypy_cache/
+.hypothesis/
+.nox/
+.tox/
+htmlcov/
+coverage.xml
+nosetests.xml
+
+# Environments / local config
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+.idea/
+.vscode/
+.codebuddy/
+
+# Notebook / docs
+.ipynb_checkpoints/
+docs/_build/
+site/
+
+# Logs / sqlite
+*.log
+db.sqlite3
+db.sqlite3-journal
+
+# Large local assets: models, datasets, outputs
+models/
+datasets/
+data/
+outputs/
+outputs-*/
+results/
+results-*/
+swanlog/
+cache/
+
+# Keep lightweight config and source
+!config/
+!scripts/
+!src/
+

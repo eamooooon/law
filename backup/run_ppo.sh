@@ -1,0 +1,20 @@
+CUDA_VISIBLE_DEVICES=0,1 python ppo_training.py \
+    --sft_model_path Qwen/Qwen2.5-0.5B-Instruct \
+    --reward_model_path Qwen/Qwen2.5-0.5B-Instruct \
+    --model_name_or_path Qwen/Qwen2.5-0.5B-Instruct \
+    --template_name qwen \
+    --dtype bfloat16 \
+    --train_file_dir ./data/finetune \
+    --validation_file_dir ./data/finetune \
+    --max_source_length 1024 \
+    --max_completion_length 1000 \
+    --per_device_train_batch_size 1 \
+    --gradient_accumulation_steps 4 \
+    --gradient_checkpointing True \
+    --do_train \
+    --max_steps 3000 \
+    --output_dir outputs-ppo-qwen-v1 \
+    --eval_strategy steps \
+    --eval_steps 100 \
+    --num_train_epochs 3 \
+    --report_to tensorboard
