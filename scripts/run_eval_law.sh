@@ -68,10 +68,17 @@ run_eval() {
         -o "$metric_root/lawbench_${split}.csv"
     )
   done
+
+  python "$PROJECT_ROOT/src/eval/summarize_lawbench_results.py" \
+    --results_dir "$metric_root" \
+    --data_root "$LAWBENCH_DATA_ROOT" \
+    --model_dir "$model_dir"
 }
 
 cd "$PROJECT_ROOT"
 
-run_eval "outputs/t1_full_mix" "results/t1_full_mix_lawbench"
+run_eval "models/Qwen2.5-3B" "results/qwen2.5-3b"
 
-run_eval "outputs/grpo-qwen2.5-3b-lr5e7" "results/grpo-qwen2.5-3b-lr5e7_lawbench"
+# run_eval "outputs/t1_full_mix" "results/t1_full_mix_lawbench"
+
+# run_eval "outputs/grpo-qwen2.5-3b-lr5e7" "results/grpo-qwen2.5-3b-lr5e7_lawbench"
