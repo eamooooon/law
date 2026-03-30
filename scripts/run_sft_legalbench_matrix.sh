@@ -156,9 +156,9 @@ run_eval() {
 run_train "$T3_NAME" "$DATA_EN_DIR" "$FULL_OUTPUT_ROOT/$T3_NAME" "False"
 run_eval "$FULL_OUTPUT_ROOT/$T3_NAME" "$RESULT_ROOT/$T3_NAME"
 
-run_train "$T4_NAME" "$DATA_EN_DIR" "$LORA_OUTPUT_ROOT/$T4_NAME" "True"
-merge_lora_model "$T4_NAME" "$LORA_OUTPUT_ROOT/$T4_NAME" "$MERGED_OUTPUT_ROOT/$T4_NAME"
-run_eval "$MERGED_OUTPUT_ROOT/$T4_NAME" "$RESULT_ROOT/$T4_NAME"
+# run_train "$T4_NAME" "$DATA_EN_DIR" "$LORA_OUTPUT_ROOT/$T4_NAME" "True"
+# merge_lora_model "$T4_NAME" "$LORA_OUTPUT_ROOT/$T4_NAME" "$MERGED_OUTPUT_ROOT/$T4_NAME"
+# run_eval "$MERGED_OUTPUT_ROOT/$T4_NAME" "$RESULT_ROOT/$T4_NAME"
 
 echo "=================================================="
 echo "All T1-T4 experiments completed."

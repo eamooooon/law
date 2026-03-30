@@ -77,8 +77,8 @@ run_eval() {
 
 cd "$PROJECT_ROOT"
 
-run_eval "models/Qwen2.5-3B" "results/qwen2.5-3b"
-
 # run_eval "outputs/t1_full_mix" "results/t1_full_mix_lawbench"
 
 # run_eval "outputs/grpo-qwen2.5-3b-lr5e7" "results/grpo-qwen2.5-3b-lr5e7_lawbench"
+
+run_eval "outputs/sft-qwen2.5-3b-lr2e5-comb" "results/sft-qwen2.5-3b-lr2e5-comb"

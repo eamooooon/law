@@ -303,16 +303,58 @@ def find_all_linear_names(peft_model, int4=False, int8=False):
     return sorted(lora_module_names)
 
 
-def _collect_data_files(file_dir: str):
-    """收集目录、单文件或逗号分隔输入的 json/jsonl 路径列表。"""
+def _collect_data_files(file_dir: str, split_name: Optional[str] = None):
+    """收集目录、单文件或逗号分隔输入的 json/jsonl 路径列表。
+
+    规则：
+    1. 如果传入目录且包含标准切分文件 train.jsonl / validation.jsonl，
+       则按 split_name 优先只取对应文件。
+    2. 自动忽略 metadata.json / *_metadata.json 这类辅助文件。
+    3. 兼容旧用法：目录递归收集 json/jsonl。
+    """
     file_paths = []
     candidates = [item.strip() for item in str(file_dir).split(",") if item.strip()]
     for candidate in candidates:
         if os.path.isfile(candidate):
+            base = os.path.basename(candidate).lower()
+            if base == "metadata.json" or base.endswith("_metadata.json"):
+                continue
             file_paths.append(candidate)
             continue
-        file_paths.extend(glob(f"{candidate}/**/*.json", recursive=True))
-        file_paths.extend(glob(f"{candidate}/**/*.jsonl", recursive=True))
+
+        if not os.path.isdir(candidate):
+            continue
+
+        preferred_files = []
+        if split_name == "train":
+            preferred_files = [
+                os.path.join(candidate, "train.jsonl"),
+                os.path.join(candidate, "train.json"),
+            ]
+        elif split_name == "validation":
+            preferred_files = [
+                os.path.join(candidate, "validation.jsonl"),
+                os.path.join(candidate, "validation.json"),
+                os.path.join(candidate, "eval.jsonl"),
+                os.path.join(candidate, "eval.json"),
+            ]
+
+        matched_preferred = [path for path in preferred_files if os.path.isfile(path)]
+        if matched_preferred:
+            file_paths.extend(matched_preferred)
+            continue
+
+        json_files = glob(f"{candidate}/**/*.json", recursive=True)
+        jsonl_files = glob(f"{candidate}/**/*.jsonl", recursive=True)
+        for path in json_files + jsonl_files:
+            base = os.path.basename(path).lower()
+            if base == "metadata.json" or base.endswith("_metadata.json"):
+                continue
+            if split_name == "train" and base.startswith(("validation.", "eval.", "test.")):
+                continue
+            if split_name == "validation" and base.startswith(("train.",)):
+                continue
+            file_paths.append(path)
     return sorted(set(file_paths))
 
 
@@ -426,16 +468,30 @@ def main():
     else:
         data_files = {}
         if data_args.train_file_dir is not None:
-            train_data_files = _collect_data_files(data_args.train_file_dir)
+            train_data_files = _collect_data_files(
+                data_args.train_file_dir, split_name="train"
+            )
             if train_data_files:
                 logger.info(f"Train files: {train_data_files}")
                 data_files["train"] = train_data_files
 
         if data_args.validation_file_dir is not None:
-            val_data_files = _collect_data_files(data_args.validation_file_dir)
+            val_data_files = _collect_data_files(
+                data_args.validation_file_dir, split_name="validation"
+            )
             if val_data_files:
                 logger.info(f"Validation files: {val_data_files}")
                 data_files["validation"] = val_data_files
+        elif data_args.train_file_dir is not None:
+            auto_val_files = _collect_data_files(
+                data_args.train_file_dir, split_name="validation"
+            )
+            if auto_val_files:
+                logger.info(
+                    "未显式提供 validation_file_dir，已自动使用同目录验证集文件: "
+                    f"{auto_val_files}"
+                )
+                data_files["validation"] = auto_val_files
 
         if "train" not in data_files:
             raise ValueError("本地训练需要提供 --train_file_dir")

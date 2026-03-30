@@ -90,8 +90,6 @@ latex2sympy2_extended==1.0.6
 Levenshtein==0.21.1
 llguidance==1.3.0
 llvmlite==0.44.0
-lm-format-enforcer==0.11.3
--e git+https://github.com/EleutherAI/lm-evaluation-harness.git@ee7e8f4fe58e13d6760c066474f0d01477317d1d#egg=lm_eval
 loguru==0.7.3
 ltp==4.2.13
 ltp-core==0.1.4
@@ -142,7 +140,6 @@ nvidia-nvtx-cu12==12.8.90
 openai==2.24.0
 openai-harmony==0.0.8
 OpenCC==1.1.6
--e git+https://github.com/open-compass/opencompass.git@6a22f017d72a76bfabd91e118cc26512656162b2#egg=opencompass
 opencv-python-headless==4.13.0.92
 opentelemetry-api==1.40.0
 opentelemetry-exporter-otlp==1.40.0
@@ -154,7 +151,6 @@ opentelemetry-sdk==1.40.0
 opentelemetry-semantic-conventions==0.61b0
 opentelemetry-semantic-conventions-ai==0.5.0
 outlines_core==0.2.11
-packaging @ file:///home/task_176104877067765/conda-bld/packaging_1761049113113/work
 pandas==2.3.3
 partial-json-parser==0.2.1.1.post7
 pathvalidate==3.3.1

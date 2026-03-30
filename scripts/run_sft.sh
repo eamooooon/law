@@ -4,8 +4,10 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-RUN_NAME="sft-qwen2.5-3b-lr2e5-all-2"
 MASTER_PORT="${MASTER_PORT:-$((20000 + RANDOM % 20000))}"
+
+MODEL_PATH="Qwen2.5-3B"
+RUN_NAME="sft-qwen2.5-3b-lr2e5-comb"
 
 SWANLAB_PROJECT="law"
 SWANLAB_API_KEY="zd9sy4txCTlXq4E3NkcGv"
@@ -13,8 +15,8 @@ export SWANLAB_PROJECT SWANLAB_API_KEY
 
 ARGS=(
     # 路径
-    --model_name_or_path "$PROJECT_ROOT/models/Qwen2.5-3B"
-    --train_file_dir "$PROJECT_ROOT/data/sft/"
+    --model_name_or_path "$PROJECT_ROOT/outputs/$MODEL_PATH"
+    --train_file_dir "$PROJECT_ROOT/data/sft-comb/"
     --output_dir "$PROJECT_ROOT/outputs/$RUN_NAME"
 
     # 优化参数
